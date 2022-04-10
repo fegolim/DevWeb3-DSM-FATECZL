@@ -21,35 +21,35 @@ import com.fatec.sig1.ports.MantemProduto;
 public class GUIProdutoController {
 	Logger logger = LogManager.getLogger(GUIProdutoController.class);
 	@Autowired
-	MantemProduto servico1;
+	MantemProduto servico;
 
-	@GetMapping("/produto")
+	@GetMapping("/produtos")
 	public ModelAndView retornaFormDeConsultaTodosProdutos() {
 		ModelAndView modelAndView = new ModelAndView("consultarProduto");
-		modelAndView.addObject("produto", servico1.consultaTodos());
+		modelAndView.addObject("produtos", servico.consultaTodos());
 		return modelAndView;
 	}
 
-	@GetMapping("/produtos")
+	@GetMapping("/produto")
 	public ModelAndView retornaFormDeCadastroTodosProdutos(Produto produto) {
 		ModelAndView mv = new ModelAndView("cadastrarProduto");
-		mv.addObject("produtos", produto);
+		mv.addObject("produto", produto);
 		return mv;
 	}
 
 	@GetMapping("/produto/{cpf}") // diz ao metodo que ira responder a uma requisicao do tipo get
 	public ModelAndView retornaFormParaEditarProduto(@PathVariable("cpf") String cpf) {
 		ModelAndView modelAndView = new ModelAndView("atualizarProduto");
-		modelAndView.addObject("produto", servico1.consultaPorCpf(cpf).get()); // retorna um objeto do tipo cliente
+		modelAndView.addObject("produto", servico.consultaPorCpf(cpf).get()); // retorna um objeto do tipo cliente
 		return modelAndView; // addObject adiciona objetos para view
 	}
 
 	@GetMapping("/produto/id/{id}")
 	public ModelAndView excluirNoFormDeConsultaProduto(@PathVariable("id") Long id) {
-		servico1.delete(id);
+		servico.delete(id);
 		logger.info(">>>>>> 1. servico de exclusao chamado para o id => " + id);
 		ModelAndView modelAndView = new ModelAndView("consultarProduto");
-		modelAndView.addObject("produto", servico1.consultaTodos());
+		modelAndView.addObject("produto", servico.consultaTodos());
 		return modelAndView;
 	}
 
@@ -59,9 +59,9 @@ public class GUIProdutoController {
 		if (result.hasErrors()) {
 			modelAndView.setViewName("cadastrarProduto");
 		} else {
-			if (servico1.save(produto).isPresent()) {
+			if (servico.save(produto).isPresent()) {
 				logger.info(">>>>>> controller chamou adastrar e consulta todos");
-				modelAndView.addObject("produto", servico1.consultaTodos());
+				modelAndView.addObject("produto", servico.consultaTodos());
 			} else {
 				logger.info(">>>>>> controller cadastrar com dados invalidos");
 				modelAndView.setViewName("cadastrarProduto");
@@ -80,8 +80,8 @@ public class GUIProdutoController {
 			produto.setId(id);
 			return new ModelAndView("atualizarProduto");
 		} else {
-			servico1.altera(produto);
-			modelAndView.addObject("produto", servico1.consultaTodos());
+			servico.altera(produto);
+			modelAndView.addObject("produto", servico.consultaTodos());
 		}
 		return modelAndView;
 	}
