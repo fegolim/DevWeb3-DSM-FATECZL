@@ -15,4 +15,14 @@ public class GUIMenuController {
 	public ModelAndView home() {
 		return new ModelAndView("paginaMenu");
 	}
+
+	@GetMapping("/clientes")
+	public ModelAndView cadastrarCliente() {
+		return new ModelAndView("cadastrarCliente");
+	}
+
+	@GetMapping("/fornecedores")
+	public ModelAndView cadastrarProduto() {
+		return new ModelAndView("cadastrarProduto");
+	}
 }
